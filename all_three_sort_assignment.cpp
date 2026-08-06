@@ -1,4 +1,4 @@
-#include <iostream> //noe to modify the file 
+#include <iostream>
 using namespace std ;
 struct student {
 string name ;
@@ -27,7 +27,7 @@ if (s[j].CGPA<s[min].CGPA){
 }
 }
 void insertion_sort(student s[],int n){
-    for (int i=0;i<n;i++){
+    for (int i=1;i<n;i++){
         int j=i;
         while (j>0 && s[j-1].name>s[j].name) {
     swap (s[j-1],s[j]);
@@ -64,7 +64,25 @@ void quick_sort(student s[], int low, int high)
         quick_sort(s, p + 1, high);
     }
 }
+int binary(student s[],int low,int high, float cgpaTarget){
+   while (low<=high){
+     int mid =(low+high)/2;
+     if (s[mid].CGPA==cgpaTarget) return mid;
+     else if (cgpaTarget >s[mid].CGPA) low=mid+1;
+     else if (cgpaTarget<s[mid].CGPA) high=mid-1;
+    }
+    return -1;
 
+}
+int binary(student s[],int low,int high, string nameTarget){
+    while (low<=high){
+     int mid =(low+high)/2;
+     if (s[mid].name==nameTarget) return mid;
+     else if (nameTarget >s[mid].name) low=mid+1;
+     else if (nameTarget<s[mid].name) high=mid-1;
+    }
+    return -1;
+}
 int main () {
     int n;
     cin>>n;
@@ -77,6 +95,7 @@ int main () {
         cout<<"enter the cgpa :"<<endl;
         cin>>s[i].CGPA;
     }
+
     int fx;
     cout<<"enter 1 if want bubble(roll num) sort enter 2 if want selection sort(cgpa) and 3 if want insertion sort(name) & 4 if want topper n cgpa sorted :\n";
     cin>>fx;
@@ -96,12 +115,9 @@ case 3:
 case 4:
     quick_sort(s, 0, n - 1);
     break;
-
 default:
     cout<<"Invalid input";
 }
-    
-    
    
     for (int i=0;i<n;i++){
         if (fx==1){
@@ -125,6 +141,57 @@ default:
                 cout<<"name :"<<s[n-i-1].name<<"\n"<<" roll no:"<<s[n-i-1].roll_no<<"\n"<<" cgpa:"<<s[n-i-1].CGPA<<"\n ";
             }
         }
+        
+        string nameTarget;
+        float cgpaTarget;
+    int t;
+    cout<<"enter 1 find the student by name or 2 by cgpa"<<endl;
+    cin>>t;
+    if (t==1){
+    cout<<"enter the target to find by name:\n"<<endl;
+    cin>>nameTarget;
+    }
+    else if (t==2){
+        cout<<"enter the target value of cgpa :\n";
+        cin>>cgpaTarget;
+    }
+    switch(t){
+        case 1:{
+        insertion_sort(s,n);
+        int index=binary(s,0,n-1,nameTarget);
+    
+            if (index!=-1){
+                cout<<"target found at:"<<index<<endl;
+                 for (int i=0;i<n;i++){
+                        if (s[i].name==nameTarget){
+                       cout<<"Name : "<<s[i].name<<endl;
+                       cout<<"CGPA : "<<s[i].CGPA<<endl;
+                       cout<<"Roll : "<<s[i].roll_no<<endl;
+                        }
+                    }
+            }
+            else {
+                cout<<"target not found";
+            }
+            break;
+        }
+        case 2:{
+                    for (int i=0;i<n;i++){
+                        if (s[i].CGPA==cgpaTarget){
+                       cout<<"Name : "<<s[i].name<<endl;
+                       cout<<"CGPA : "<<s[i].CGPA<<endl;
+                       cout<<"Roll : "<<s[i].roll_no<<endl;
+                        }
+                    }
+                
+            
+            break;
+        }
+            default:
+            cout<<"invalid input";
+    }
+    
+    
    
 return 0;
 }
